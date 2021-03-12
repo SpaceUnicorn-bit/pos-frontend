@@ -1,0 +1,100 @@
+<aside id="sidebar" class="nano">
+    <div class="nano-content">
+        <div class="logo-container">
+            <span style="color: rgb(255, 240, 240);">Pizpos</span>
+        </div>
+        <menu class="menu-segment">
+            <ul>
+                <li class="title">Comida <span class="icon">+</span></li>
+                <li class="active"><a href="#">Inbox<span> (43)</span></a></li>
+                <li><a href="#">Important</a></li>
+                <li><a href="#">Sent</a></li>
+                <li><a href="#">Drafts</a></li>
+                <li><a href="#">Trash</a></li>
+            </ul>
+        </menu>
+        <div class="separator"></div>
+        <div class="menu-segment">
+            <ul class="labels">
+                <li class="title">Labels <span class="icon">+</span></li>
+                <li><a href="#">Dribbble</a></li>
+                <li><a href="#">Roommates </a></li>
+                <li><a href="#">Bills </a></li>
+            </ul>
+        </div>
+        <div class="separator"></div>
+        <div class="menu-segment">
+            <ul class="chat">
+                <li class="title">Chat <span class="icon">+</span></li>
+                <li><a href="#">Laura Turner</a></li>
+                <li><a href="#">Kevin Jones</a></li>
+                <li><a href="#">John King</a></li>
+                <li><a href="#">Jenny Parker</a></li>
+                <li><a href="#">Paul Green</a></li>
+            </ul>
+        </div>
+        <div class="bottom-padding"></div>
+    </div>
+</aside>
+<main id="main">
+    <div class="overlay"></div>
+    <header class="header">
+        <div class="search-box">
+            <input placeholder="Search..."><span class="icon glyphicon glyphicon-search"></span>
+        </div>
+        <h1 class="page-title">
+            <a class="sidebar-toggle-btn trigger-toggle-sidebar">
+                <span class="line"></span>
+                <span class="line"></span>
+                <span class="line"></span>
+                <span class="line line-angle1"></span>
+                <span class="line line-angle2"></span>
+            </a>
+            <a>
+                <span class="icon glyphicon glyphicon-chevron-down"></span>
+            </a>
+        </h1>
+    </header>
+    <div id="main-nano-wrapper" class="nano" style="overflow-y:scroll;">
+        <app-itemlist></app-itemlist>
+        <div class="fabs" (click)="displayMenu($event)">
+            <a target="_blank" class="fab"></a>
+            <a target="_blank" class="fab"></a>
+            <a target="_blank" class="fab"></a>
+            <a id="prime" class="fab"><i class="prime zmdi zmdi-plus"></i></a>
+        </div>
+        <!--<div class="fab-container">
+            <div class="fab fab-icon">
+                <i class="fas fa-question"></i>
+            </div>
+            <ul class="fab-option">
+                <li>
+                    <span class="fab-label">Nueva factura</span>
+                    <div class="fab-icon">
+                        <i class="fas fa-question"></i>
+                    </div>
+                </li>
+                <li>
+                    <span class="fab-label">Ir a la ultima</span>
+                    <div class="fab-icon">
+                        <i class="fas fa-question"></i>
+                    </div>
+                </li>
+                <li>
+                    <span class="fab-label">Ver todas</span>
+                    <div class="fab-icon">
+                        <i class="fas fa-question"></i>
+                    </div>
+                </li>
+            </ul>
+        </div>-->
+        <!--<div class="row">
+            <div class="col-md-8">
+                <app-itemlist></app-itemlist>
+            </div>
+            <div class="col-md-4">
+                <app-billing></app-billing>
+            </div>
+        </div>-->
+    </div>
+</main>
