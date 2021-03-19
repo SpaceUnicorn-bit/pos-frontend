@@ -13,6 +13,7 @@ $sidebar-dark-text-color: #ffffff;
 
 $sidebar-width: 300px;
 $sidebar-padding: 47px;
+$backgroud-main: #fcfcfc;
 
 
 * {
@@ -332,7 +333,7 @@ a {
 
 			.sidebar-toggle-btn {
 				width: 0;
-				margin-top: 1px;
+				margin-top: -44px;
 				padding: 11px 0 0 0;
 				float: left;
 				position: relative;
@@ -466,7 +467,7 @@ a {
 	#main-nano-wrapper {
 		position: absolute;
 		top: 110px;
-		background: #e2e2e2;
+		background: $backgroud-main;
 		bottom: 0;
 		height: auto;
 	}
@@ -855,7 +856,7 @@ a {
 	#main #main-nano-wrapper {
 		position: absolute;
 		top: 100px;
-		background: #e2e2e2;
+		background: $backgroud-main;
 		bottom: 0;
 		height: auto;
 	}
@@ -963,7 +964,7 @@ a {
 
 
 /*FLOATING BOTTOM*/
-/*.fab-container {
+.fab-container {
 	position: fixed;
 	bottom: 50px;
 	right: 50px;
@@ -975,13 +976,14 @@ a {
 	width: 50px;
 	height: 50px;
 	border-radius: 100%;
-	background: #69d45b;
+	background: #ff4c34;
 	box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 }
 
 .fab-icon:hover {
 	opacity: 0.8;
 }
+
 .fab-icon i{
 	display: flex;
 	align-items: center;
@@ -1003,7 +1005,7 @@ a {
 	position: absolute;
 	bottom: 70px;
 	right: 0;
-	opacity: 0;
+	//opacity: 0;
 	transition: all .3s ease;
 
 	transform: scale(0);
@@ -1032,14 +1034,14 @@ a {
 	color: #ffffff;
 	box-shadow: 0 6px 20px rgba(0,0,0,.2);
 	margin-right: 10px;
-}*/
+}
 
 @import url(https://zavoloklom.github.io/material-design-iconic-font/css/docs.md-iconic-font.min.css);
 
 
 /*Floating Action Button*/
 
-.fabs {
+/*.fabs {
   bottom: 0;
   position: fixed;
   margin: 1em;
@@ -1174,9 +1176,6 @@ a {
   color: #263238;
 }
 
-
-/*Element state*/
-
 .is-active {
   -moz-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
@@ -1202,9 +1201,6 @@ a {
   -o-animation: load 1s cubic-bezier(0, .99, 1, 0.6) infinite;
   animation: load 1s cubic-bezier(0, .99, 1, 0.6) infinite;
 }
-
-
-/*Animation*/
 
 @keyframes zoomIn {
   0% {
@@ -1246,14 +1242,12 @@ a {
     opacity: 0;
   }
 }
-/* SMARTPHONES PORTRAIT */
 
 @media only screen and (min-width: 300px) {
   .chat {
     width: 200px;
   }
 }
-/* SMARTPHONES LANDSCAPE */
 
 @media only screen and (min-width: 480px) {
   .chat {
@@ -1263,7 +1257,6 @@ a {
     width: 65%;
   }
 }
-/* TABLETS PORTRAIT */
 
 @media only screen and (min-width: 768px) {
   .chat {
@@ -1273,7 +1266,6 @@ a {
     width: 65%;
   }
 }
-/* TABLET LANDSCAPE / DESKTOP */
 
 @media only screen and (min-width: 1024px) {
   .chat {
@@ -1283,9 +1275,6 @@ a {
     width: 65%;
   }
 }
-
-
-/* Ripple */
 
 .ink {
   display: block;
@@ -1297,14 +1286,13 @@ a {
   webkit-transform: scale(0);
   transform: scale(0);
 }
-/*animation effect*/
+
 
 .ink.animate {
   animation: ripple 0.5s ease-in-out;
 }
 
 @keyframes ripple {
-  /*scale the element to 250% to safely cover the entire link and fade it out*/
   
   100% {
     opacity: 0;
@@ -1313,4 +1301,4 @@ a {
     webkit-transform: scale(5);
     transform: scale(5);
   }
-}
+}*/

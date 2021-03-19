@@ -4,13 +4,18 @@
             <span style="color: rgb(255, 240, 240);">Pizpos</span>
         </div>
         <menu class="menu-segment">
+            <h4>Comida</h4>
             <ul>
-                <li class="title">Comida <span class="icon">+</span></li>
-                <li class="active"><a href="#">Inbox<span> (43)</span></a></li>
+                <li class="title">Comida <span class="icon">+</span>
+                </li>
+                <li *ngFor="let category of categoryList">
+                    <a style="cursor: pointer;" (click)="onClickCategory(category)">{{category.name}}</a>
+                </li>
+                <!--<li class="active"><a href="#">Inbox<span> (43)</span></a></li>
                 <li><a href="#">Important</a></li>
                 <li><a href="#">Sent</a></li>
                 <li><a href="#">Drafts</a></li>
-                <li><a href="#">Trash</a></li>
+                <li><a href="#">Trash</a></li>-->
             </ul>
         </menu>
         <div class="separator"></div>
@@ -56,16 +61,17 @@
         </h1>
     </header>
     <div id="main-nano-wrapper" class="nano" style="overflow-y:scroll;">
-        <app-itemlist></app-itemlist>
+        <app-itemlist [categorySend]="categorySend"></app-itemlist>
+        <!--
         <div class="fabs" (click)="displayMenu($event)">
             <a target="_blank" class="fab"></a>
             <a target="_blank" class="fab"></a>
             <a target="_blank" class="fab"></a>
             <a id="prime" class="fab"><i class="prime zmdi zmdi-plus"></i></a>
-        </div>
-        <!--<div class="fab-container">
+        </div>-->
+        <div class="fab-container">
             <div class="fab fab-icon">
-                <i class="fas fa-question"></i>
+                <i class="fas zmdi zmdi-plus"></i>
             </div>
             <ul class="fab-option">
                 <li>
@@ -87,7 +93,7 @@
                     </div>
                 </li>
             </ul>
-        </div>-->
+        </div>
         <!--<div class="row">
             <div class="col-md-8">
                 <app-itemlist></app-itemlist>

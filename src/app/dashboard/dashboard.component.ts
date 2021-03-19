@@ -1,13 +1,29 @@
 import { Component, OnInit } from '@angular/core';
+import { CategoryService }  from '../service/category.service';
 
 @Component({
   selector: 'app-dashboard',
+  providers: [ CategoryService ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  public categoryList;
+  public categorySend;
 
-  constructor() { }
+
+  constructor( private categoryServices: CategoryService) { }
+
+  getCategory() {
+    this.categoryServices.getCategory().subscribe(
+      res => {
+        this.categoryList = res;
+        console.log(this.categoryList);
+      }, error => {
+        console.log(<any> error);
+      }     
+    );
+  }
 
   displayMenu(event) {
     const fabs = document.querySelectorAll('.fab');
@@ -27,7 +43,17 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  onClickCategory(event) {
+    this.categorySend = event;
+    console.log(this.categorySend);
+  }
+
+  onStart(event) {
+    console.log(event);
+  }
+
   ngOnInit(): void {
+    this.getCategory();
   }
 
 }
