@@ -37,7 +37,6 @@ export class DashboardComponent implements OnInit {
     newSpan.classList.add('animate');
     primeId.insertBefore(newSpan, primespan);
     //clickBtn.classList.add('is-visible');
-    console.log(body);
     fabs.forEach((btn) => {
       btn.classList.add('is-visible');
     });
@@ -45,7 +44,6 @@ export class DashboardComponent implements OnInit {
 
   onClickCategory(event) {
     this.categorySend = event;
-    console.log(this.categorySend);
   }
 
   onStart(event) {

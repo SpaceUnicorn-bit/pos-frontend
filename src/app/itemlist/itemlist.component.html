@@ -1,16 +1,91 @@
 <section style="margin-left: 8px;">
+    <h2 style="margin-bottom: 2%; font-size: 25px; font-weight: bold; margin-left: 3%; color: rgb(236, 69, 18);">
+        {{catName}}
+    </h2>
     <div class="row">
-        {{categorySend}}
         <div class="col-lg-3 col-md-3 col-xs-12 single-product" *ngFor="let item of itemList">
-            <div class="product">
+            <div class="product" (click)="getDataItem(content, item)">
                 <div class="imgbox">
-                    <img [src]="item.img && item.img.formats.thumbnail.url ? 'http://localhost:1337' + item.img.formats.thumbnail.url : '../assets/unnamed.jpg'" alt="">
+                    <img [src]="item.img && item.img.formats.thumbnail.url ? 'http://localhost:1337' + item.img.formats.thumbnail.url : '../assets/unnamed.jpg'"
+                        alt="">
                 </div>
                 <div class="details">
                     <h5>{{item.name}}</h5>
-                    <span>₡ {{item.price}}</span>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<ng-template #newBilling let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Nueva Factura</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row" style="padding-bottom: 2%;">
+      <div class="col-md-6">
+        <div class="inputNumTables">
+          <input type="text" name="" id="" [(ngModel)]="billing.numTable" placeholder="Numero de mesa">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <span class="orderStyle">{{orderId}}</span>
+      </div>
+    </div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">producto</th>
+          <th scope="col">precio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let itemsBilling of arrayitemsBilling">
+          <td>{{itemsBilling.id}}</td>
+          <td>{{itemsBilling.name}}</td>
+          <td>₡ {{itemsBilling.prices}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Agregar a la factura</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h3>{{viewItem.name}}</h3>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row" *ngFor="let dataitem of arrayDataItems">
+          <form >
+            <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" [(ngModel)]="model">
+              <label ngbButtonLabel class="btn-danger">
+                <input ngbButton type="radio" [value]="dataitem.size">
+                {{dataitem.size}}
+                <span>₡ {{dataitem.prices}}</span>
+              </label><br>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <img [src]="imgItem && imgItem.formats.thumbnail.url ? 'http://localhost:1337' + imgItem.formats.thumbnail.url : '../assets/unnamed.jpg'"
+        alt="">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn" style="background: rgb(56, 255, 106);" (click)="addNewBilling(newBilling)">Nueva factura</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close('Close click')">
+    añadir a la anterior</button>
+    <button type="button" class="btn btn-dark" (click)="modal.close('Close click')">Close</button>
+  </div>
+</ng-template>

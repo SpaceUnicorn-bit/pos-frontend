@@ -62,3 +62,28 @@
 	margin-right: 0%;
 	margin-bottom: 0%;
 }
+
+.orderStyle{
+    margin-left: 70%;
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(199, 199, 199);
+}
+
+.inputNumTables {
+    input{
+        text-indent: 15px;
+        height: 40px;
+        z-index: 2;
+        outline: none;
+        color: #999;
+        background: transparent;
+        border: 2px solid #ffffff;
+        border-radius: 5px;
+        transition-timing-function: cubic-bezier(.3, 1.5, .6, 1);
+        &:focus {
+            color: rgb(41, 40, 40);
+            border-color: darken(#dbdada, 10%);
+        }
+    }
+}
