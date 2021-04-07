@@ -18,4 +18,5 @@ export class CategoryService {
   getCategory() {
     return this._http.get<any>(`${this.url}categories`);
   }
+  
 }

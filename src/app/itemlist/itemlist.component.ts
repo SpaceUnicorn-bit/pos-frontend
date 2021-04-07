@@ -1,19 +1,22 @@
 import { Component, Input, OnInit, SimpleChanges, ViewEncapsulation  } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemslistService } from '../service/itemslist.service';
+import { EmployeesService } from '../service/employees.service';
+import { BillingserviceService } from '../service/billingservice.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Item } from '../models/item';
 import { dataItem } from '../models/dataItem';
 import { Billing } from '../models/billing';
 
 @Component({
   selector: 'app-itemlist',
-  providers: [ItemslistService],
+  providers: [ItemslistService, EmployeesService, BillingserviceService],
   templateUrl: './itemlist.component.html',
   styleUrls: ['./itemlist.component.scss']
 })
 
 export class ItemlistComponent implements OnInit  {
+  public employee;
+  public token;
   public itemList = [];
   public radioGroupForm: FormGroup;
   public model;
@@ -31,10 +34,14 @@ export class ItemlistComponent implements OnInit  {
 
   constructor(private itemService: ItemslistService,
     private formBuilder: FormBuilder,
+    private billingService: BillingserviceService,
+    private employeeService: EmployeesService,
     private modalService: NgbModal
   ) {
     this.ItemSizePrice = new dataItem('', 0);
-    this.billing = new Billing('', 0, 0, '');
+    this.billing = new Billing('', 0, '', false, '');
+    this.employee = this.employeeService.getIdentity();
+    this.token = this.employeeService.getToken();
   }
 
   getItemList() {
@@ -89,7 +96,6 @@ export class ItemlistComponent implements OnInit  {
     this.orderId = "#" + this.orderId;
     this.billing.orderId = this.orderId;
     let saveItem;
-    this.createNewbilling(this.billing);
     this.arrayDataItems.map((currentItem) =>{
       if(currentItem.size === this.model){
         saveItem = currentItem;
@@ -100,7 +106,24 @@ export class ItemlistComponent implements OnInit  {
   }
 
   createNewbilling(dataBilling) {
+    dataBilling.office = this.employee.office.id;
+    dataBilling.numTable = dataBilling.numTable.toString();
+    this.billingService.createNewbilling(dataBilling, this.token).subscribe(
+      res => {
+        console.log(res);
+      }, error => {
+        console.log(<any> error);
+      }
+    );
+  }
 
+  endBilling() {
+    this.createNewbilling(this.billing);
+    //this.modalService.dismissAll();
+  }
+
+  assignValue(e){
+    this.billing.paid = e.target.checked;
   }
 
   makeRandom(lengthOfCode: number, possible: string) {

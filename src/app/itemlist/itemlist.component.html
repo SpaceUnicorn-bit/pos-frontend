@@ -51,6 +51,26 @@
       </tbody>
     </table>
   </div>
+  <div class="row" style="margin-right:0; margin-left:0;">
+    <div class="col-md-5">
+      <h3>Pagado:</h3>
+      <div class="can-toggle can-toggle--size-small">
+        <input id="b" type="checkbox" (change)="assignValue($event)">
+        <label for="b">
+          <div class="can-toggle__switch" data-checked="Si" data-unchecked="No"></div>
+        </label>
+      </div>
+    </div>
+    <div class="col-md-5" style="margin-left: 20px;">
+      <div class="groupPrice">
+        <h3>Total:</h3>
+        <span>₡ {{billing.purchaseValue}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-dark" (click)="endBilling()">Finalizar</button>
+  </div>
 </ng-template>
 
 <ng-template #content let-modal>

@@ -21,6 +21,7 @@ export class EmployeesService {
       password: password,
     });
   }
+  
   getIdentity() {
     const identity = JSON.parse(localStorage.getItem('identity'));
     if (identity !== 'undefined') {
