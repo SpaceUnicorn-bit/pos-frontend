@@ -1,8 +1,9 @@
-import { Component, Input, OnInit, SimpleChanges, ViewEncapsulation  } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges, ViewEncapsulation, ViewChild  } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ItemslistService } from '../service/itemslist.service';
 import { EmployeesService } from '../service/employees.service';
 import { BillingserviceService } from '../service/billingservice.service';
+import { ToastContainerDirective, ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { dataItem } from '../models/dataItem';
 import { Billing } from '../models/billing';
@@ -15,6 +16,7 @@ import { Billing } from '../models/billing';
 })
 
 export class ItemlistComponent implements OnInit  {
+  @ViewChild(ToastContainerDirective, { static: true }) toastContainer: ToastContainerDirective;
   public employee;
   public token;
   public itemList = [];
@@ -34,12 +36,13 @@ export class ItemlistComponent implements OnInit  {
 
   constructor(private itemService: ItemslistService,
     private formBuilder: FormBuilder,
+    private toastr: ToastrService,
     private billingService: BillingserviceService,
     private employeeService: EmployeesService,
     private modalService: NgbModal
   ) {
     this.ItemSizePrice = new dataItem('', 0);
-    this.billing = new Billing('', 0, '', false, '');
+    this.billing = new Billing('', 0, '', false, '', null, null);
     this.employee = this.employeeService.getIdentity();
     this.token = this.employeeService.getToken();
   }
@@ -95,22 +98,60 @@ export class ItemlistComponent implements OnInit  {
     this.orderId = this.makeRandom(lengthOfCode, possible);
     this.orderId = "#" + this.orderId;
     this.billing.orderId = this.orderId;
+    this.incrementBillingValue();
+  }
+
+  incrementBillingValue() {
     let saveItem;
     this.arrayDataItems.map((currentItem) =>{
       if(currentItem.size === this.model){
         saveItem = currentItem;
         this.billing.purchaseValue += currentItem.prices;
         this.arrayitemsBilling.push(saveItem);
+        //this.billing.recipes_sizes = saveItem;
+        this.billing.recipes_sizes.push(saveItem);
       }
     });
+    console.log(this.billing)
   }
 
   createNewbilling(dataBilling) {
     dataBilling.office = this.employee.office.id;
     dataBilling.numTable = dataBilling.numTable.toString();
+    dataBilling.recipes = this.viewItem;
+    this.viewItem = [];
+    this.billing = new Billing('', 0, '', false, '', null, null);
     this.billingService.createNewbilling(dataBilling, this.token).subscribe(
       res => {
-        console.log(res);
+        this.showSuccess();
+        localStorage.removeItem('lastOrderId');
+        localStorage.setItem('lastOrderId', res.id);
+      }, error => {
+        console.log(<any> error);
+      }
+    );
+  }
+
+  addItemLastBilling() {
+    const lastOrderId = localStorage.getItem('lastOrderId');
+    this.billingService.getBilling(this.token, lastOrderId).subscribe(
+      res => {
+        this.billing = res;
+        this.billing.recipes.push(this.viewItem);
+        this.incrementBillingValue();
+        this.updateBilling();
+      }, error => {
+        console.log(<any> error);
+      }
+    );
+  }
+
+  updateBilling(){
+    const lastOrderId = localStorage.getItem('lastOrderId');
+    this.billingService.updateNewbilling(this.billing, this.token, lastOrderId).subscribe(
+      res => {
+        this.modalService.dismissAll();
+        this.showSuccess();
       }, error => {
         console.log(<any> error);
       }
@@ -119,7 +160,7 @@ export class ItemlistComponent implements OnInit  {
 
   endBilling() {
     this.createNewbilling(this.billing);
-    //this.modalService.dismissAll();
+    this.modalService.dismissAll();
   }
 
   assignValue(e){
@@ -132,6 +173,14 @@ export class ItemlistComponent implements OnInit  {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return text;
+  }
+
+  showSuccess() {
+    this.toastr.overlayContainer = this.toastContainer;
+    this.toastr.success('Se ha añadido correctamente', 'Éxito', {
+      timeOut: 3000,
+      progressBar: true
+    });
   }
 
   ngOnInit(): void {

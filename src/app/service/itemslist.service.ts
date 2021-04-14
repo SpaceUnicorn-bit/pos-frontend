@@ -21,6 +21,10 @@ export class ItemslistService {
     return this._http.get<any>(`${this.url}recipes-sizes`);
   }
 
+  getItemsById(idRecipe) {
+    return this._http.get<any>(`${this.url}recipes-sizes/${idRecipe}`);
+  }
+
   getJoinRecipe(itemId: any) {
     return this._http.get<any>(`${this.url}recipes/getJoinRecipe/ ${itemId}`);
   }

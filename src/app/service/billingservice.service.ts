@@ -17,16 +17,21 @@ export class BillingserviceService {
 
 
   createNewbilling(dataBilling, token) {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json')
+    .set('Authorization', `Bearer ${token}`);
+    return this._http.post<any>(`${this.url}billings`, dataBilling, { headers: headers });
+  }
+
+  updateNewbilling(dataBilling, token, billingId) {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json')
+    .set('Authorization', `Bearer ${token}`);
     console.log(dataBilling)
-    return this._http.post<any>(`${this.url}billings`, {
-      numTable: dataBilling.numTable,
-      office: dataBilling.office,
-      orderId: dataBilling.orderId,
-      paid: dataBilling.paid,
-      purchaseValue: dataBilling.purchaseValue,
-      recipes: null
-       
-      }
-    );
+    return this._http.put<any>(`${this.url}billings/${billingId}`, dataBilling, { headers: headers });
+  }
+
+  getBilling(token,  lastOrderId) {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json')
+    .set('Authorization', `Bearer ${token}`);
+    return this._http.get<any>(`${this.url}billings/${lastOrderId}`, { headers: headers });
   }
 }

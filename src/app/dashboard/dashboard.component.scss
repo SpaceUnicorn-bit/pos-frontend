@@ -1039,266 +1039,267 @@ a {
 @import url(https://zavoloklom.github.io/material-design-iconic-font/css/docs.md-iconic-font.min.css);
 
 
-/*Floating Action Button*/
+// switch button
 
-/*.fabs {
-  bottom: 0;
-  position: fixed;
-  margin: 1em;
-  right: 0;
-  z-index: 998;
+
+@mixin can-toggle-branding(
+  $can-toggle-off-color: rgb(141, 4, 4), 
+  $can-toggle-on-color: #5fc054,
+  $can-toggle-inactive-text: rgba(white, 0.5),
+  $can-toggle-transition: cubic-bezier(0,1,0.5,1)) {
+    input[type="checkbox"] {
+        &[disabled] ~ label {
+            color: rgba($can-toggle-off-color, 0.5);
+        }
+        &:focus ~ label, &:hover ~ label {
+            .can-toggle__switch {
+                background-color: $can-toggle-off-color;
+                &:after {
+                    color: darken($can-toggle-off-color, 10%);
+                }
+            }
+        }
+        &:hover ~label {
+            color:darken($can-toggle-off-color, 5%);
+        }
+        &:checked {
+            ~ label {
+                &:hover {
+                    color: darken($can-toggle-on-color, 3%);
+                }
+                .can-toggle__switch {
+                    background-color: lighten($can-toggle-on-color, 5%);
+                    &:after { 
+                        color: darken($can-toggle-on-color, 5%); 
+                    }
+                }
+            }
+
+            &:focus, &:hover {
+                ~ label {
+                  .can-toggle__switch {
+                    background-color: $can-toggle-on-color;
+                    &:after { color: darken($can-toggle-on-color, 10%); }
+                  }
+                } 
+            }
+        }
+    }
+    label {
+        .can-toggle__label-text { 
+            flex: 1;
+        }
+        .can-toggle__switch {
+            transition: background-color 0.3s $can-toggle-transition;
+            background: lighten($can-toggle-off-color, 5%);
+            &:before { color: $can-toggle-inactive-text; }
+            &:after {
+              // Autoprefixer choked here, so making the prefixes explicit
+              -webkit-transition: -webkit-transform 0.3s $can-toggle-transition;
+              transition: transform 0.3s $can-toggle-transition;
+              color: $can-toggle-off-color; 
+            }
+        }
+    }
 }
 
-.fab {
-  display: block;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  text-align: center;
-  color: #FFF;
-  background: #00BCD4;
-  margin: 25px auto 0;
-  box-shadow: 0 0 4px rgba(0, 0, 0, .14), 0 4px 8px rgba(0, 0, 0, .28);
-  cursor: pointer;
-  -webkit-transition: all .1s ease-out;
-  -moz-transition: all .1s ease-out;
-  -o-transition: all .1s ease-out;
-  transition: all .1s ease-out;
-  position: relative;
-  z-index: 998;
-  overflow: hidden;
+@mixin can-toggle-appearance 
+( 
+  $can-toggle-width: 134px,
+  $can-toggle-height: 36px,
+  $can-toggle-border-radius: 4px,
+  $can-toggle-offset: 2px,
+  $can-toggle-label-font-size: 14px,
+  $can-toggle-switch-font-size: 12px,
+  $can-toggle-shadow: 0 3px 3px rgba(black, 0.4)
+){
+    $can-toggle-switch-width: $can-toggle-width/2;
+    input[type="checkbox"] {
+
+        &:focus ~ label, &:hover ~ label {
+          .can-toggle__switch {
+            &:after { box-shadow: $can-toggle-shadow; } 
+          }
+        }
+
+        &:checked {
+            ~ label {
+              .can-toggle__switch {
+                &:after { transform: translate3d($can-toggle-width - ($can-toggle-switch-width + $can-toggle-offset),0,0); }  
+              }
+            }
+            &:focus, &:hover {
+              ~ label {
+                .can-toggle__switch { &:after { box-shadow: $can-toggle-shadow; } }
+              } 
+            }
+        }
+    }
+
+    label {
+        font-size: $can-toggle-label-font-size;
+        .can-toggle__switch {
+            height: $can-toggle-height;
+            flex: 0 0 $can-toggle-width;
+            border-radius: $can-toggle-border-radius;
+            
+            &:before {
+              left: $can-toggle-width/2;
+              font-size: $can-toggle-switch-font-size; 
+              line-height: $can-toggle-height;
+              width: $can-toggle-width/2;
+              padding: 0 12px;
+            }
+            
+            &:after {
+              top: $can-toggle-offset; left: $can-toggle-offset;
+              border-radius: $can-toggle-border-radius/2;
+              width: $can-toggle-switch-width - $can-toggle-offset; 
+              line-height: $can-toggle-height - ($can-toggle-offset*2);
+              font-size: $can-toggle-switch-font-size;
+            }
+            
+            &:hover {
+              &:after { box-shadow: $can-toggle-shadow; }
+            }
+        }
+    }
 }
 
-.fab > i {
-  font-size: 2em;
-  line-height: 55px;
-  -webkit-transition: all .2s ease-out;
-  -moz-transition: all .2s ease-out;
-  -o-transition: all .2s ease-out;
-  transition: all .2s ease-in-out;
-}
-
-.fab:not(:last-child) {
-  width: 0;
-  height: 0;
-  margin: 20px auto 0;
-  opacity: 0;
-  visibility: hidden;
-}
-
-.fab:not(:last-child) > i {
-  font-size: 1.4em;
-  line-height: 40px;
-}
-
-.fab:not(:last-child).is-visible {
-  width: 40px;
-  height: 40px;
-  margin: 15px auto 10;
-  opacity: 1;
-  visibility: visible;
-}
-
-.fab:nth-last-child(1) {
-  -webkit-transition-delay: 25ms;
-  -moz-transition-delay: 25ms;
-  -o-transition-delay: 25ms;
-  transition-delay: 25ms;
-}
-
-.fab:not(:last-child):nth-last-child(2) {
-  -webkit-transition-delay: 20ms;
-  -moz-transition-delay: 20ms;
-  -o-transition-delay: 20ms;
-  transition-delay: 20ms;
-}
-
-.fab:not(:last-child):nth-last-child(3) {
-  -webkit-transition-delay: 40ms;
-  -moz-transition-delay: 40ms;
-  -o-transition-delay: 40ms;
-  transition-delay: 40ms;
-}
-
-.fab:not(:last-child):nth-last-child(4) {
-  -webkit-transition-delay: 60ms;
-  -moz-transition-delay: 60ms;
-  -o-transition-delay: 60ms;
-  transition-delay: 60ms;
-}
-
-.fab:not(:last-child):nth-last-child(5) {
-  -webkit-transition-delay: 80ms;
-  -moz-transition-delay: 80ms;
-  -o-transition-delay: 80ms;
-  transition-delay: 80ms;
-}
-
-.fab:not(:last-child):active,
-.fab:not(:last-child):focus,
-.fab:not(:last-child):hover {
-  box-shadow: 0 0 6px rgba(0, 0, 0, .16), 0 6px 12px rgba(0, 0, 0, .32);
-}
-
-.fab_field {
-  width: 100%;
-  display: inline-block;
-  text-align: center;
-  background: #eceff1;
-  box-shadow: 0 0 6px rgba(0, 0, 0, .16), 0 6px 12px rgba(0, 0, 0, .32);
-}
-
-.fab_field a {
-  display: inline-block;
-  text-align: center;
-}
-
-#fab_listen {
-  float: left;
-  background: rgba(0, 0, 0, 0);
-}
-
-#fab_send {
-  float: right;
-  background: rgba(0, 0, 0, 0);
-}
-
-.fab_field .fab {
-  width: 35px;
-  height: 35px;
-  box-shadow: none;
-  margin: 5px;
-}
-
-.fab_field .fab>i {
-  font-size: 1.6em;
-  line-height: 35px;
-  color: #263238;
-}
-
-.is-active {
-  -moz-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  -webkit-transform: rotate(180deg);
-  transform: rotate(180deg);
-  -o-transition: all 1s ease-in-out;
-  -moz-transition: all 1s ease-in-out;
-  transition: all 1s ease-in-out;
-}
-
-.is-float {
-  box-shadow: 0 0 6px rgba(0, 0, 0, .16), 0 6px 12px rgba(0, 0, 0, .32);
-}
-
-.is-max {
-  box-shadow: inset 0 -12px 10px -10px rgba(0, 0, 0, 0.18), inset 0 12px 10px -10px rgba(0, 0, 0, 0.10);
-}
-
-.is-loading {
-  display: block;
-  -webkit-animation: load 1s cubic-bezier(0, .99, 1, 0.6) infinite;
-  -moz-animation: load 1s cubic-bezier(0, .99, 1, 0.6) infinite;
-  -o-animation: load 1s cubic-bezier(0, .99, 1, 0.6) infinite;
-  animation: load 1s cubic-bezier(0, .99, 1, 0.6) infinite;
-}
-
-@keyframes zoomIn {
-  0% {
-    -moz-transform: scale(0);
-    -ms-transform: scale(0);
-    -webkit-transform: scale(0);
-    transform: scale(0);
-    opacity: 0.0;
-  }
-  100% {
-    -moz-transform: scale(1);
-    -ms-transform: scale(1);
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes load {
-  0% {
-    -moz-transform: scale(0);
-    -ms-transform: scale(0);
-    -webkit-transform: scale(0);
-    transform: scale(0);
-    opacity: 0.0;
-  }
-  50% {
-    -moz-transform: scale(1.5);
-    -ms-transform: scale(1.5);
-    -webkit-transform: scale(1.5);
-    transform: scale(1.5);
-    opacity: 1;
-  }
-  100% {
-    -moz-transform: scale(1);
-    -ms-transform: scale(1);
-    -webkit-transform: scale(1);
-    transform: scale(1);
-    opacity: 0;
-  }
-}
-
-@media only screen and (min-width: 300px) {
-  .chat {
-    width: 200px;
-  }
-}
-
-@media only screen and (min-width: 480px) {
-  .chat {
-    width: 300px;
-  }
-  .chat_field {
-    width: 65%;
-  }
-}
-
-@media only screen and (min-width: 768px) {
-  .chat {
-    width: 300px;
-  }
-  .chat_field {
-    width: 65%;
-  }
-}
-
-@media only screen and (min-width: 1024px) {
-  .chat {
-    width: 400px;
-  }
-  .chat_field {
-    width: 65%;
-  }
-}
-
-.ink {
-  display: block;
-  position: absolute;
-  background: rgba(38, 50, 56, 0.4);
-  border-radius: 100%;
-  -moz-transform: scale(0);
-  -ms-transform: scale(0);
-  webkit-transform: scale(0);
-  transform: scale(0);
-}
-
-
-.ink.animate {
-  animation: ripple 0.5s ease-in-out;
-}
-
-@keyframes ripple {
+.can-toggle {
+    position: relative;
+    *, *:before, *:after { box-sizing: border-box; }
+    //overflow: hidden;
+    
+    input[type="checkbox"] {
+      opacity: 0;
+      position: absolute;
+      top: 0; left: 0;
+      
+      &[disabled] ~ label {
+        pointer-events: none;
+        .can-toggle__switch { opacity: 0.4; }
+      }
+      
+      &:checked {
+        ~ label {
+          
+          .can-toggle__switch {
+            
+            &:before {
+              content: attr(data-unchecked);
+              left: 0;
+            }
+          
+            &:after {
+              content: attr(data-checked);
+            }  
+          }
+        }
+        
+        &:focus, &:hover {
+          ~ label {
+          } 
+        }
+      }
+    }
+    
+    label {
+      user-select: none;
+      position: relative;
+      display: flex;
+      align-items: center;
+      
+      .can-toggle__label-text { 
+        flex: 1;
+        padding-left: 32px;
+      }
+      
+      .can-toggle__switch {
+        position: relative;
+        
+        &:before {
+          content: attr(data-checked);
+          position: absolute;
+          top: 0;
+          text-transform: uppercase;
+          text-align: center;
+        }
+        
+        &:after {
+          content: attr(data-unchecked);
+          position: absolute;
+          z-index: 5;
+          text-transform: uppercase;
+          text-align: center;
+          background: white;
+          transform: translate3d(0,0,0);
+        }
   
-  100% {
-    opacity: 0;
-    -moz-transform: scale(5);
-    -ms-transform: scale(5);
-    webkit-transform: scale(5);
-    transform: scale(5);
-  }
-}*/
+      }
+      
+    }
+    
+    // Default values for .can-toggle class
+    @include can-toggle-branding; 
+    @include can-toggle-appearance; 
+    
+    // Create toggles of different sizes by overriding the can-toggle-appearance mixin defaults
+    &.can-toggle--size-small {
+      @include can-toggle-appearance
+      (
+        90px, // Toggle width
+        28px,  // Toggle height
+        2px,   // Toggle border radius
+        1px,   // Offset (distance btw switch and box)
+        13px,  // Label font size
+        10px,  // Switch font size
+        0 2px 2px rgba(black, 0.4) // Switch shadow on hover/focus
+      ); 
+    }
+    
+    &.can-toggle--size-large {
+      @include can-toggle-appearance
+      (
+        160px, // Toggle width
+        50px,  // Toggle height
+        4px,   // Toggle border radius
+        2px,   // Offset (distance btw switch and box)
+        14px,  // Label font size
+        14px,  // Switch font size
+        0 4px 4px rgba(black, 0.4) // Switch shadow on hover/focus
+      ); 
+    }
+    
+    // Or re-brand the toggle for different applications
+    &.demo-rebrand-1 {
+      @include can-toggle-branding
+      (
+        #b53e74,  // Off state color
+        #3d9c72,  // On state color
+        rgba(white, 0.6),  // Off state text color
+        ease-in-out  // Transition timing function
+      ); 
+    }
+    
+    &.demo-rebrand-2 {
+      @include can-toggle-branding
+      (
+        #444,  // Off state color
+        #69be28,  // On state color
+        rgba(white, 0.7),  // Off state text color
+        cubic-bezier(0.860, 0.000, 0.070, 1.000)  // Transition timing function
+      );
+      @include can-toggle-appearance
+      (
+        120px, // Toggle width
+        60px,  // Toggle height
+        60px,   // Toggle border radius
+        2px,   // Offset (distance btw switch and box)
+        13px,  // Label font size
+        13px,  // Switch font size
+        0 4px 4px rgba(black, 0.4) // Switch shadow on hover/focus
+      ); 
+    }
+    
+}
