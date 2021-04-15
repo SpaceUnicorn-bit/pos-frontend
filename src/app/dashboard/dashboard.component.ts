@@ -18,7 +18,9 @@ export class DashboardComponent implements OnInit {
   public billing;
   public employee;
   public token;
+  public billingList;
   public arrayitemsBilling = [];
+  public detailBilling;
 
 
   constructor( private categoryServices: CategoryService,
@@ -59,17 +61,21 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  getLastBilling(lastBilling){ 
+  getLastBilling(lastBilling, nullBilling){ 
     const lastOrderId = localStorage.getItem('lastOrderId');
-    this.billingService.getBilling(this.token, lastOrderId).subscribe(
-      res => {
-        this.billing = res;
-        this.setRecipeItemsFormat(this.billing.recipes_sizes);
-      }, error => {
-        console.log(<any> error);
-      }
-    );
-    this.modalService.open(lastBilling, { size: 'lg' });
+    if (lastOrderId != null) {      
+      this.billingService.getBilling(this.token, lastOrderId).subscribe(
+        res => {
+          this.billing = res;
+          this.setRecipeItemsFormat(this.billing.recipes_sizes);
+          this.modalService.open(lastBilling, { size: 'lg' });
+        }, error => {
+          console.log(<any> error);
+        }
+      );
+    }else {
+      this.modalService.open(nullBilling, { size: 'lg' });
+    }
   }
 
   setRecipeItemsFormat(arrayRecipeItems) {
@@ -83,14 +89,10 @@ export class DashboardComponent implements OnInit {
         }
       ); 
     }
+    console.log(arrayRecipeItems)
   }
 
   removeItem(itemsBilling){
-    /*for (let index = 0; index < this.billing.recipes.length; index++) {
-      if (itemsBilling.recipe.id === this.billing.recipes[index].id) {
-        this.billing.recipes.splice(index, 1);
-      }
-    }*/
     for (let index = 0; index <  this.billing.recipes_sizes.length; index++) {
       if (itemsBilling.size.id === this.billing.recipes_sizes[index].size && itemsBilling.recipe.id === this.billing.recipes_sizes[index].recipe) {
         this.billing.recipes_sizes.splice(index, 1);
@@ -115,12 +117,30 @@ export class DashboardComponent implements OnInit {
   }
 
   paidBilling(){
+    localStorage.removeItem('lastOrderId');
+    this.updateBilling();
     this.modalService.dismissAll();
-    console.log(this.billing);
+  }
+
+  getAll(getAllBilling) { 
+    this.billingService.getAllBillings(this.token).subscribe(
+      res => {
+        this.billingList = res;
+      }, error => {
+        console.log(<any> error);
+      }
+    );
+    this.modalService.open(getAllBilling, { size: 'lg' });
   }
 
   assignValue(e){
     this.billing.paid = e.target.checked;
+  }
+
+  openDetail(itemsBilling, detailModalBilling) {
+    this.detailBilling = itemsBilling;
+    this.setRecipeItemsFormat(this.detailBilling.recipes_sizes);
+    this.modalService.open(detailModalBilling, { size: 'lg' });
   }
 
   onClickCategory(event) {

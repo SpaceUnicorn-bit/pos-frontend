@@ -55,13 +55,13 @@
                         <i class="fas fa-question"></i>
                     </div>
                 </li>
-                <li (click)="getLastBilling(lastbilling)">
+                <li (click)="getLastBilling(lastbilling, nullBilling)">
                     <span class="fab-label">Ir a la ultima</span>
                     <div class="fab-icon">
                         <i class="fas fa-question"></i>
                     </div>
                 </li>
-                <li>
+                <li (click)="getAll(getAllBilling)">
                     <span class="fab-label">Ver todas</span>
                     <div class="fab-icon">
                         <i class="fas fa-question"></i>
@@ -69,15 +69,95 @@
                 </li>
             </ul>
         </div>
-        <!--<div class="row">
-            <div class="col-md-8">
-                <app-itemlist></app-itemlist>
-            </div>
-            <div class="col-md-4">
-                <app-billing></app-billing>
-            </div>
-        </div>-->
     </div>
+    <ng-template #getAllBilling let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">Todas las facturas</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                      <th scope="col">Orden</th>
+                      <th scope="col">Mesa</th>
+                      <th scope="col">Precio</th>
+                      <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let itemsBilling of billingList">
+                        <td>{{itemsBilling.orderId}}</td>
+                        <td>{{itemsBilling.numTable}}</td>
+                        <td>₡ {{itemsBilling.purchaseValue | number: '3.'}}</td>
+                        <td>
+                            <button class="btn btn-dark" (click)="openDetail(itemsBilling, detailModalBilling)">Detalle</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-template>
+
+    <ng-template #detailModalBilling let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">Factura: {{detailBilling.orderId}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                      <th scope="col">Producto</th>
+                      <th scope="col">Tamaño</th>
+                      <th scope="col">Precio</th>
+                      <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let itemsBilling of arrayitemsBilling">
+                        <td>{{itemsBilling.recipe.name}}</td>
+                        <td>{{itemsBilling.size.size}}</td>
+                        <td>₡ {{itemsBilling.prices | number: '3.'}}</td>
+                        <td><button class="btn btn-dark" (click)="removeItem(itemsBilling)"><i class="fas fa-trash"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-3">
+                    <h3>Pagado:</h3>
+                    <div class="can-toggle can-toggle--size-small">
+                      <input id="b" type="checkbox" name="paidDetailBilling" #paidDetailBilling="ngModel" [(ngModel)]="detailBilling.paid">
+                      <label for="b">
+                        <div class="can-toggle__switch" data-checked="Si" data-unchecked="No"></div>
+                      </label>
+                    </div>
+                </div>
+                <div class="col-md-3" style="margin-left: 50%;">
+                    <div class="groupPrice">
+                        <h3>Total:</h3>
+                        <span>₡ {{detailBilling.purchaseValue}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-dark" (click)="paidBilling()">Facturar</button>
+        </div>
+    </ng-template>
+
+    <ng-template #nullBilling let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title">Vacio</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </ng-template>
     <ng-template #lastbilling let-modal>
         <div class="modal-header">
             <h4 class="modal-title">Factura: {{billing.orderId}}</h4>
@@ -124,6 +204,6 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-dark" (click)="paidBilling()">Facturar</button>
-          </div>
+        </div>
     </ng-template>
 </main>

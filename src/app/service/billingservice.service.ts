@@ -34,4 +34,10 @@ export class BillingserviceService {
     .set('Authorization', `Bearer ${token}`);
     return this._http.get<any>(`${this.url}billings/${lastOrderId}`, { headers: headers });
   }
+
+  getAllBillings(token) {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json')
+    .set('Authorization', `Bearer ${token}`);
+    return this._http.get<any>(`${this.url}billings`, { headers: headers });
+  }
 }

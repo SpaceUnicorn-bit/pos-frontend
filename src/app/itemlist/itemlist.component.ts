@@ -103,12 +103,15 @@ export class ItemlistComponent implements OnInit  {
 
   incrementBillingValue() {
     let saveItem;
+    this.billing.recipes_sizes = [];
     this.arrayDataItems.map((currentItem) =>{
       if(currentItem.size === this.model){
         saveItem = currentItem;
         this.billing.purchaseValue += currentItem.prices;
         this.arrayitemsBilling.push(saveItem);
         //this.billing.recipes_sizes = saveItem;
+        console.log(saveItem)
+        console.log(this.billing)
         this.billing.recipes_sizes.push(saveItem);
       }
     });
